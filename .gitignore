@@ -1,3 +1,4 @@
 todo.txt
 devfile.py
-*.project
+.project
+.pydevproject

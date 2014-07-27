@@ -1,0 +1,13 @@
+1) Movie category while entering value not in the list throwing error -Done by declaring the variable
+on_list as a local one inside the function itself
+
+2) Year is not randomnly selecting due to try and except block - Done by making 1 as a choice for 
+random selection
+
+3) Genres need not be static one.. Make it dynamic from the api call itself..
+
+4) Some movie and year combinations doesn't give up any results.. check on it.. - Done by using some workaround
+in the form of if else loop
+
+5) for the above point, user should be presented with the menu only if the options are selected by user, else the
+random needs to re-shuffled inside itself...

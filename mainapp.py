@@ -3,7 +3,7 @@ import json
 import random
 
 baseurl = "https://api.themoviedb.org/3/discover/movie?"
-api_key = "ENTER THEMOVIEDB.ORG API KEY HERE"
+api_key = "b38d52928554b4c9fe0b7b43f36a3c7b"
 genre = ""
 genreid = 0
 year = 0

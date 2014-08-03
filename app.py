@@ -1,11 +1,19 @@
-from flask import Flask, url_for, redirect, render_template, flash
+from flask import Flask, url_for, redirect, render_template, flash, request
 import flask
+import random
+import urllib
+import json
 
 app = Flask(__name__)
 app.config.from_object('config')
 api_key = app.config["API_KEY"]
 
-
+baseurl = "https://api.themoviedb.org/3/discover/movie?"
+genre = ""
+movie = ""
+movieplot = ""
+movierating = ""
+genreid = 0
 genres= [
     {
      "id": 120893,
@@ -153,19 +161,57 @@ genres= [
     }
   ]
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods = ['GET', 'POST'])
 def index():
-    return flask.render_template('index.html', 
-                                 title = "Hello world",
+    if request.method == 'GET':
+        return flask.render_template('index.html', 
+                                 title = "Movie suggester",
                                  genres = genres,
-                                 moviename = "The Wolf of Wall Street",
-                                 movieplot = "Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.",
-                                 movierating = 8.3,
-                                 movieurl = "http://www.imdb.com/title/tt0993846/",
-                                 movieposter = "../static/img/portfolio-1.jpg")
+                                 moviename = "Select the options above")
     
+    genre = request.form['genre']
+    if request.form['fromyear'] < request.form['toyear']:
+        year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
+    tmdbcaller(genre, year)
+    return flask.render_template('index.html', 
+                         title = "Movie suggester",
+                         genres = genres,
+                         moviename = movie,
+                         movieplot = movieplot,
+                         movierating = movierating)
+
+def tmdbcaller(genre, year):
+    for item in genres:
+        if item["name"].lower() == genre.lower():
+            genreid = item["id"]
+            
+    url = baseurl + "api_key=" + api_key + "&with_genres=" + str(genreid) + "&year=" + str(year) + "&vote_average.gt=6.0&vote_count.gte=5"
+    resp = urllib.urlopen(url).read()
+    jsonvalues = json.loads(resp)  
+        
+    if jsonvalues['total_pages'] == 0:
+        print "Seems there is no good %s movies released in %d" % (genre, year)
     
+    elif jsonvalues['total_pages'] > 1:
+        page = random.randint(1, jsonvalues['total_pages'])
+        resp = urllib.urlopen(url + "&page=" + str(page)).read()
+        jsonvalues = json.loads(resp)
+        movie = str(random.choice(jsonvalues['results'])["title"])
+        imdb_caller(movie, year)
+    
+    else:
+       movie = str(random.choice(jsonvalues['results'])["title"])
+       imdb_caller(movie, year) 
+
+def imdb_caller(movie, year):
+    iurl = "http://www.omdbapi.com/?t=" + movie + "&y=" + str(year)
+    resp = urllib.urlopen(iurl).read()
+    jsonvalues = json.loads(resp)
+    
+    if jsonvalues["Response"] == "True":
+        movieplot = jsonvalues["Plot"]
+        movierating = jsonvalues["imdbRating"]
+        return movie, movieplot, movierating
     
 
 if __name__ == '__main__':

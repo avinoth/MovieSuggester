@@ -172,15 +172,6 @@ def index():
     genre = request.form['genre']
     if request.form['fromyear'] < request.form['toyear']:
         year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
-    tmdbcaller(genre, year)
-    return flask.render_template('index.html', 
-                         title = "Movie suggester",
-                         genres = genres,
-                         moviename = movie,
-                         movieplot = movieplot,
-                         movierating = movierating)
-
-def tmdbcaller(genre, year):
     for item in genres:
         if item["name"].lower() == genre.lower():
             genreid = item["id"]
@@ -197,13 +188,10 @@ def tmdbcaller(genre, year):
         resp = urllib.urlopen(url + "&page=" + str(page)).read()
         jsonvalues = json.loads(resp)
         movie = str(random.choice(jsonvalues['results'])["title"])
-        imdb_caller(movie, year)
     
     else:
        movie = str(random.choice(jsonvalues['results'])["title"])
-       imdb_caller(movie, year) 
 
-def imdb_caller(movie, year):
     iurl = "http://www.omdbapi.com/?t=" + movie + "&y=" + str(year)
     resp = urllib.urlopen(iurl).read()
     jsonvalues = json.loads(resp)
@@ -211,7 +199,15 @@ def imdb_caller(movie, year):
     if jsonvalues["Response"] == "True":
         movieplot = jsonvalues["Plot"]
         movierating = jsonvalues["imdbRating"]
-        return movie, movieplot, movierating
+        movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
+
+    return flask.render_template('index.html', 
+                         title = "Movie suggester",
+                         genres = genres,
+                         moviename = movie,
+                         movieplot = movieplot,
+                         movierating = movierating,
+                         movieurl = movieurl)
     
 
 if __name__ == '__main__':

@@ -11,8 +11,6 @@ api_key = app.config["API_KEY"]
 baseurl = "https://api.themoviedb.org/3/discover/movie?"
 genre = ""
 movie = ""
-movieplot = ""
-movierating = ""
 genreid = 0
 genres= [
     {
@@ -181,7 +179,11 @@ def index():
     jsonvalues = json.loads(resp)  
         
     if jsonvalues['total_pages'] == 0:
-        print "Seems there is no good %s movies released in %d" % (genre, year)
+        flash ('Seems there is no good movies for the genre year combination, Let\'s do it again..')
+        return flask.render_template('index.html', 
+                                 title = "Movie suggester",
+                                 genres = genres,
+                                 moviename = "Select the options above")
     
     elif jsonvalues['total_pages'] > 1:
         page = random.randint(1, jsonvalues['total_pages'])
@@ -198,7 +200,6 @@ def index():
     
     if jsonvalues["Response"] == "True":
         movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
-
         return flask.render_template('index.html', 
                          title = "Movie suggester",
                          genres = genres,
@@ -207,6 +208,9 @@ def index():
                          movieplot = jsonvalues["Plot"],
                          movierating = jsonvalues["imdbRating"],
                          movieurl = movieurl)
+    
+    else:
+        flash ('Error encountered while fetching data.')
     
 
 if __name__ == '__main__':

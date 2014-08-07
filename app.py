@@ -197,16 +197,15 @@ def index():
     jsonvalues = json.loads(resp)
     
     if jsonvalues["Response"] == "True":
-        movieplot = jsonvalues["Plot"]
-        movierating = jsonvalues["imdbRating"]
         movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
 
-    return flask.render_template('index.html', 
+        return flask.render_template('index.html', 
                          title = "Movie suggester",
                          genres = genres,
                          moviename = movie,
-                         movieplot = movieplot,
-                         movierating = movierating,
+                         year = year,
+                         movieplot = jsonvalues["Plot"],
+                         movierating = jsonvalues["imdbRating"],
                          movieurl = movieurl)
     
 

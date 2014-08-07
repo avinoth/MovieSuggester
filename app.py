@@ -14,10 +14,6 @@ movie = ""
 genreid = 0
 genres= [
     {
-     "id": 120893,
-     "name": "Any"
-     },
-    {
       "id": 28,
       "name": "Action"
     },
@@ -200,6 +196,13 @@ def index():
     
     if jsonvalues["Response"] == "True":
         movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
+        print 
+        print movieurl
+        print jsonvalues["Plot"]
+        print movie
+        print year
+        print jsonvalues["imdbRating"]
+        print movieurl
         return flask.render_template('index.html', 
                          title = "Movie suggester",
                          genres = genres,

@@ -164,8 +164,15 @@ def index():
                                  moviename = "Select the options above")
     
     genre = request.form['genre']
-    if request.form['fromyear'] < request.form['toyear']:
+    if request.form['fromyear'] <= request.form['toyear']:
         year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
+    else:
+        flash('From Year should not be greater than To Year')
+        return flask.render_template('index.html', 
+                                 title = "Movie suggester",
+                                 genres = genres,
+                                 moviename = "Select the options above")
+        
     for item in genres:
         if item["name"].lower() == genre.lower():
             genreid = item["id"]
@@ -196,13 +203,6 @@ def index():
     
     if jsonvalues["Response"] == "True":
         movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
-        print 
-        print movieurl
-        print jsonvalues["Plot"]
-        print movie
-        print year
-        print jsonvalues["imdbRating"]
-        print movieurl
         return flask.render_template('index.html', 
                          title = "Movie suggester",
                          genres = genres,

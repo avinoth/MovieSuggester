@@ -5,3 +5,4 @@ devfile.py
 env
 dev.html
 *.pyc
+config.py

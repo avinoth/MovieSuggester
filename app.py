@@ -217,7 +217,4 @@ def index():
     
     else:
         flash ('Error encountered while fetching data.')
-    
 
-if __name__ == '__main__':
-    app.run()

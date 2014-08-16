@@ -3,6 +3,5 @@ devfile.py
 .project
 .pydevproject
 env
-config.py
 dev.html
 *.pyc

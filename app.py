@@ -192,11 +192,13 @@ def index():
         page = random.randint(1, jsonvalues['total_pages'])
         resp = urllib.urlopen(url + "&page=" + str(page)).read()
         jsonvalues = json.loads(resp)
-        movie = str(random.choice(jsonvalues['results'])["title"])
-    
-    else:
-       movie = str(random.choice(jsonvalues['results'])["title"])
 
+    movie = str(random.choice(jsonvalues['results'])["title"])
+    
+    for result in jsonvalues['results']:
+        if result['title'] == movie:
+            poster = "http://image.tmdb.org/t/p/w300/" + str(result['poster_path'])
+            
     iurl = "http://www.omdbapi.com/?t=" + movie + "&y=" + str(year)
     resp = urllib.urlopen(iurl).read()
     jsonvalues = json.loads(resp)
@@ -210,7 +212,8 @@ def index():
                          year = year,
                          movieplot = jsonvalues["Plot"],
                          movierating = jsonvalues["imdbRating"],
-                         movieurl = movieurl)
+                         movieurl = movieurl,
+                         movieposter = poster)
     
     else:
         flash ('Error encountered while fetching data.')

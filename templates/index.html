@@ -81,7 +81,7 @@
 		          		<div class="form-group">
 		            			<select class="combobox form-control" name="fromyear" id="fromyear">
 		              				<option value="" selected="selected">From year</option>
-		              				{% for i in range(1900, 2015) %}
+		              				{% for i in range(2015, 1900, -1) %}
 		              					<option>{{ i }}</option>
 		              				{% endfor %}
 		            			</select>
@@ -89,7 +89,7 @@
 		          		<div class="form-group">
 		            			<select class="combobox form-control" name="toyear" id="toyear">
 		              				<option value="" selected="selected">To year</option>
-		              				{% for i in range(1900, 2015) %}
+		              				{% for i in range(2015, 1900, -1) %}
 		              					<option>{{ i }}</option>
 		              				{% endfor %}
 		            			</select>

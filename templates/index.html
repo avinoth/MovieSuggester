@@ -104,80 +104,8 @@
         </div>
     </header>
 
-    <!-- About -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>A random movie suggester</h2>
-                    <p class="lead">Movie suggester simply selects a random movie that has a base rating of 6.0.</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </section>
 
     
-
-    <!-- Callout -->
-    <aside class="callout">
-        <div class="text-vertical-center">
-            <h1>{{ moviename }}</h1>
-        </div>
-    </aside>
-
-    <!-- Portfolio -->
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1 text-center">
-                    <h2>Selected movie</h2>
-                    <hr class="small">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="{{ movieposter }}">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                               <div class="result"><h2>Name :</h2>{{ moviename }}<br>
-                               	<h2>Year :</h2>{{ year }}<br>
-                                <h2>Plot :</h2>{{ movieplot }}<br>
-                                <h2>Rating: </h2> {{ movierating }}<br />
-                                <h2>IMDB link: </h2> <a href= " {{ movieurl }} ">{{ movieurl}} </a> <br />
-                            </div></div> 
-                        </div>
-                    <!-- /.row (nested) -->
-                </div>
-                <!-- /.col-lg-10 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </section>
-
-           <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1 text-center">
-                    
-                    <br>
-                    <ul class="list-inline">
-                        <li>
-                            <a href="https://github.com/avinoth/moviesuggester"><i class="fa fa-github fa-fw fa-3x"></i></a>
-                        </li>
-                    </ul>
-                    <hr class="small">
-                    <p class="text-muted">Copyright &copy; 2014</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <!-- jQuery Version 1.11.0 -->
     <script src="../static/js/jquery-1.11.0.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -226,7 +154,7 @@
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-53887752-1', 'auto');
+  ga('create', 'GOOGLEANALYTICSCODE', 'auto');
   ga('send', 'pageview');
 
 </script>

@@ -135,6 +135,7 @@ a {
         <div class="container container-pad" id="property-listings">
             
             {% for item in output %}
+            {% if item["moviename"] != "ErrorOccured"  %}
             <div class="row">
                 <div class="col-md-12"> 
                 	
@@ -167,7 +168,9 @@ a {
                             </div>
                         </div>
                     </div><!-- End Listing-->
-    {% endfor %}
+    		{% endif %}
+    		{% endfor %}
+    		
                     
                 </div><!-- End Col -->
             </div><!-- End row -->

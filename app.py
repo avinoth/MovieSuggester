@@ -210,13 +210,13 @@ def index():
                 result["movierating"] = jsonvalues["imdbRating"]
                 result["movieurl"] = movieurl
                 result["movieposter"] = poster
-                
-                output.append(result)
                                  
             else:
-                result["moviename"] = "IMDBFaile"
-                output.append(result)
-            
+                result["moviename"] = "ErrorOccured"
+                result["movieplot"] = "Failed to retrive data from IMDB"
+                
+            output.append(result)
+          
         return flask.render_template('listing.html', 
                                  title = "Movie suggester",
                                  genres = genres,
@@ -229,3 +229,5 @@ def index():
                                  genres = genres,
                                  moviename = "Select the options above")
 
+# if __name__ == '__main__':
+#     app.run()

@@ -134,53 +134,14 @@ a {
     <div class="container-fluid" style="background-color:#e8e8e8">
         <div class="container container-pad" id="property-listings">
             
-            <div class="row">
-              <div class="col-md-12">
-                
-                    <!-- Portfolio -->
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1 text-center">
-                    <h2>Selected movie</h2>
-                    <hr class="small">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="{{ movieposter }}">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                               <div class="result"><h2>{{ moviename }}<br></h2>
-                               	<h2>{{ year }}<br></h2>
-                                <h2>{{ movieplot }}<br></h2>
-                                <h2>{{ movierating }}<br /></h2> 
-                                <h2><a href= " {{ movieurl }} ">{{ movieurl}} </a> <br /></h2>
-                            </div></div> 
-                        </div>
-                    <!-- /.row (nested) -->
-                </div>
-                <!-- /.col-lg-10 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </section>
-                
-                
-                
-              </div>
-            </div>
-            
+            {% for item in output %}
             <div class="row">
                 <div class="col-md-12"> 
                 	
                     <div class="brdr bgc-fff pad-10 box-shad btm-mrg-20 property-listing">
                         <div class="media">
                             <a class="pull-left" href="#" target="">
-                            <img alt="image" class="img-responsive" src="{{ movieposter }}"></a>
+                            <img alt="image" class="img-responsive" src="{{ item["movieposter"] }}"></a>
 
                             <div class="clearfix visible-sm"></div>
 
@@ -188,31 +149,31 @@ a {
                                 <a href="{{ movieposter }}" target=""></a>
 
                                 <h4 class="media-heading">
-                                  <a href="{{ movieurl }}" target="">{{ moviename }} </a></h4>
+                                  <a href={{ item["movieurl"] }} target=""><h2>{{ item["moviename"] }} </h2></a></h4>
 
 
                                 <ul class="list-inline mrg-0 btm-mrg-10 clr-535353">
-                                    <li>{{ year }}</li>
+                                    <li>{{ item["year"] }}</li>
 
                                     <li style="list-style: none">|</li>
 
-                                    <li>{{ movierating }}</li>
+                                    <li>{{ item["movierating"] }}</li>
 
                                     <li style="list-style: none">|</li>
 
                                 </ul>
 
-                                <p class="hidden-xs">{{ movieplot }}</p>
+                                <p class="lead">{{ item["movieplot"] }}</p>
                             </div>
                         </div>
                     </div><!-- End Listing-->
-
+    {% endfor %}
                     
                 </div><!-- End Col -->
             </div><!-- End row -->
         </div><!-- End container -->
     </div>
-    
+
 
 
     <!-- About -->
@@ -299,7 +260,7 @@ a {
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'GOOGLEANALYTICSCODE', 'auto');
+  ga('create', 'UA-53887752-1', 'auto');
   ga('send', 'pageview');
 
 </script>

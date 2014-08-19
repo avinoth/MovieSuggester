@@ -12,6 +12,8 @@ baseurl = "https://api.themoviedb.org/3/discover/movie?"
 genre = ""
 movie = ""
 genreid = 0
+result = {}
+output = []
 genres= [
     {
       "id": 28,
@@ -164,57 +166,66 @@ def index():
                                  moviename = "Select the options above")
     
     genre = request.form['genre']
+    
+    for item in genres:
+        if item["name"].lower() == genre.lower():
+            genreid = item["id"]
+    
     if request.form['fromyear'] <= request.form['toyear']:
-        year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
+#we need 10 movies
+        for i in range(1, 10):
+            
+            year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
+            url = baseurl + "api_key=" + api_key + "&with_genres=" + str(genreid) + "&year=" + str(year) + "&vote_average.gt=6.0&vote_count.gte=5"
+            resp = urllib.urlopen(url).read()
+            jsonvalues = json.loads(resp)  
+                
+            if jsonvalues['total_pages'] == 0:
+                flash ('Seems there is no good movies for the genre year combination, Let\'s do it again..')
+                return flask.render_template('index.html', 
+                                         title = "Movie suggester",
+                                         genres = genres,
+                                         moviename = "Select the options above")
+            
+            elif jsonvalues['total_pages'] > 1:
+                page = random.randint(1, jsonvalues['total_pages'])
+                resp = urllib.urlopen(url + "&page=" + str(page)).read()
+                jsonvalues = json.loads(resp)
+        
+            movie = str(random.choice(jsonvalues['results'])["title"])
+            
+            for result in jsonvalues['results']:
+                if result['title'] == movie:
+                    poster = "http://image.tmdb.org/t/p/w300/" + str(result['poster_path'])
+                    
+            iurl = "http://www.omdbapi.com/?t=" + movie + "&y=" + str(year)
+            resp = urllib.urlopen(iurl).read()
+            jsonvalues = json.loads(resp)
+            
+            if jsonvalues["Response"] == "True":
+                movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
+                result["moviename"] = movie
+                result["year"] = year
+                result["movieplot"] = jsonvalues["Plot"]
+                result["movierating"] = jsonvalues["imdbRating"]
+                result["movieurl"] = movieurl
+                result["movieposter"] = poster
+                
+                output.append(result)
+                                 
+            else:
+                result["moviename"] = "IMDBFaile"
+                output.append(result)
+            
+        return flask.render_template('listing.html', 
+                                 title = "Movie suggester",
+                                 genres = genres,
+                                 output = output)
+        
     else:
         flash('From Year should not be greater than To Year')
         return flask.render_template('index.html', 
                                  title = "Movie suggester",
                                  genres = genres,
                                  moviename = "Select the options above")
-        
-    for item in genres:
-        if item["name"].lower() == genre.lower():
-            genreid = item["id"]
-            
-    url = baseurl + "api_key=" + api_key + "&with_genres=" + str(genreid) + "&year=" + str(year) + "&vote_average.gt=6.0&vote_count.gte=5"
-    resp = urllib.urlopen(url).read()
-    jsonvalues = json.loads(resp)  
-        
-    if jsonvalues['total_pages'] == 0:
-        flash ('Seems there is no good movies for the genre year combination, Let\'s do it again..')
-        return flask.render_template('index.html', 
-                                 title = "Movie suggester",
-                                 genres = genres,
-                                 moviename = "Select the options above")
-    
-    elif jsonvalues['total_pages'] > 1:
-        page = random.randint(1, jsonvalues['total_pages'])
-        resp = urllib.urlopen(url + "&page=" + str(page)).read()
-        jsonvalues = json.loads(resp)
-
-    movie = str(random.choice(jsonvalues['results'])["title"])
-    
-    for result in jsonvalues['results']:
-        if result['title'] == movie:
-            poster = "http://image.tmdb.org/t/p/w300/" + str(result['poster_path'])
-            
-    iurl = "http://www.omdbapi.com/?t=" + movie + "&y=" + str(year)
-    resp = urllib.urlopen(iurl).read()
-    jsonvalues = json.loads(resp)
-    
-    if jsonvalues["Response"] == "True":
-        movieurl = "www.imdb.com/title/" + jsonvalues["imdbID"]
-        return flask.render_template('index.html', 
-                         title = "Movie suggester",
-                         genres = genres,
-                         moviename = movie,
-                         year = year,
-                         movieplot = jsonvalues["Plot"],
-                         movierating = jsonvalues["imdbRating"],
-                         movieurl = movieurl,
-                         movieposter = poster)
-    
-    else:
-        flash ('Error encountered while fetching data.')
 

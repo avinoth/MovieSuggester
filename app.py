@@ -13,7 +13,7 @@ genre = ""
 movie = ""
 genreid = 0
 result = {}
-output = []
+
 genres= [
     {
       "id": 28,
@@ -159,6 +159,7 @@ genres= [
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
+    output = []
     if request.method == 'GET':
         return flask.render_template('index.html', 
                                  title = "Movie suggester",
@@ -173,7 +174,7 @@ def index():
     
     if request.form['fromyear'] <= request.form['toyear']:
 #we need 10 movies
-        for i in range(1, 10):
+        for i in range(1, 3):
             
             year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
             url = baseurl + "api_key=" + api_key + "&with_genres=" + str(genreid) + "&year=" + str(year) + "&vote_average.gt=6.0&vote_count.gte=5"
@@ -221,6 +222,7 @@ def index():
                                  title = "Movie suggester",
                                  genres = genres,
                                  output = output)
+        del output[:]
         
     else:
         flash('From Year should not be greater than To Year')
@@ -228,6 +230,8 @@ def index():
                                  title = "Movie suggester",
                                  genres = genres,
                                  moviename = "Select the options above")
-
-# if __name__ == '__main__':
-#     app.run()
+    
+    
+    
+if __name__ == '__main__':
+     app.run()

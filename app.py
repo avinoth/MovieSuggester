@@ -174,7 +174,7 @@ def index():
     
     if request.form['fromyear'] <= request.form['toyear']:
 #we need 10 movies
-        for i in range(1, 3):
+        for i in range(1, 11):
             
             year = random.randint(int(request.form['fromyear']), int(request.form['toyear']))
             url = baseurl + "api_key=" + api_key + "&with_genres=" + str(genreid) + "&year=" + str(year) + "&vote_average.gt=6.0&vote_count.gte=5"
